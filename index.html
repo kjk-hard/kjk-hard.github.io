@@ -2,9 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <!-- ВАЖНО ДЛЯ МОБИЛЬНОЙ АДАПТАЦИИ -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Игровая Визитка KJK</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
@@ -16,43 +14,52 @@
       box-sizing: border-box;
     }
 
-    /* Скрываем правый скроллбар, сохраняем колесо мыши */
+    /* Убираем видимый скроллбар, но оставляем прокрутку */
     html, body {
       height: 100%;
       width: 100%;
-      overflow-y: scroll;      /* Прокрутка */
-      scrollbar-width: none;   /* Скрыть скроллбар в Firefox */
+      overflow-y: scroll; 
+      scrollbar-width: none; /* Скрыть скроллбар в Firefox */
     }
     body::-webkit-scrollbar {
-      width: 0;               /* Скрыть скроллбар (Chrome/Safari/Opera) */
+      width: 0;             /* Скрыть скроллбар (Chrome/Safari/Opera) */
       background: transparent;
     }
 
-    /* Базовые стили для body */
     body {
       font-family: 'Press Start 2P', cursive;
-      background: #0A0A0A;
+      /* Одна фоновая картинка в правом нижнем углу */
+      background-color: #0A0A0A;
+      background-image: url('img/2.png');
+      background-repeat: no-repeat;
+      background-position: right bottom;
+      background-attachment: fixed;
+      background-size: 30% auto; /* Уменьшаем до 30% ширины экрана */
+
       color: white;
       text-align: center;
       padding: 20px;
-    }
 
-    /* Анимация плавного появления body при загрузке */
-    body {
-      opacity: 0;                
-      transform: translateY(20px); 
+      /* Отключение выделения текста (не полная защита, но усложняет копирование) */
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+
+      /* Анимация плавного появления при загрузке */
+      opacity: 0;
+      transform: translateY(20px);
       transition: opacity 1s ease, transform 1s ease;
     }
     body.loaded {
-      opacity: 1;                
-      transform: translateY(0);   
+      opacity: 1;
+      transform: translateY(0);
     }
 
     /* Шапка */
     .header {
       background: #0A0A0A;
       padding: 20px;
-      border-bottom: 3px solid red;
+      border-bottom: 3px solid #5f00ff;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -68,9 +75,9 @@
       animation: glow 2s infinite alternate;
     }
     @keyframes glow {
-      0%   { text-shadow: 0 0 5px red; }
-      50%  { text-shadow: 0 0 15px red; }
-      100% { text-shadow: 0 0 5px red; }
+      0%   { text-shadow: 0 0 5px #5f00ff; }
+      50%  { text-shadow: 0 0 15px #5f00ff; }
+      100% { text-shadow: 0 0 5px #5f00ff; }
     }
 
     /* Меню навигации */
@@ -84,7 +91,7 @@
       justify-content: center;
       gap: 20px;
       margin: 0;
-      flex-wrap: wrap; /* Чтобы на маленьком экране не вылазило за границы */
+      flex-wrap: wrap;
     }
     .game-nav li a {
       text-decoration: none;
@@ -92,12 +99,11 @@
       transition: color 0.3s;
     }
     .game-nav li a:hover {
-      color: red;
+      color: #5f00ff;
     }
 
-    /* Контейнер */
+    /* Контейнер основного контента */
     .container {
-      width: 100%;
       max-width: 100%;
       margin: auto;
       padding: 20px;
@@ -105,13 +111,13 @@
       z-index: 1;
     }
 
-    /* --- Блок "Обо мне" --- */
+    /* Блок «Обо мне» */
     .about {
       width: 100%;
-      max-width: 800px;               /* При большой ширине */
+      max-width: 800px;
       margin: 0 auto 20px;
       background: rgba(30, 30, 30, 0.9);
-      border: 2px solid red;
+      border: 2px solid #5f00ff;
       border-radius: 10px;
       padding: 15px;
       text-align: left;
@@ -121,54 +127,55 @@
       transform: scale(1.02);
     }
     .about h2 {
-      border-bottom: 2px solid red;
+      border-bottom: 2px solid #5f00ff;
       padding-bottom: 10px;
       font-size: 1.5em;
       margin-top: 0;
     }
 
-    /* --- Блоки целей --- */
+    /* Плитки «Достигнутые цели» / «Цели на будущее» */
     .goals-container {
       width: 100%;
-      max-width: 800px;       /* Широкие экраны */
+      max-width: 800px;
       margin: 0 auto 20px;
       display: flex;
       gap: 20px;
-      align-items: stretch;    
+      align-items: stretch;
     }
     .achieved, .goal {
       flex: 1;
       background: rgba(30, 30, 30, 0.9);
-      border: 2px solid red;
+      border: 2px solid #5f00ff;
       border-radius: 10px;
       padding: 15px;
       text-align: left;
       transition: transform 0.3s;
-      
-      animation: fadeUp 1.2s ease; /* анимация появления */
+      animation: fadeUp 1.2s ease;
     }
     .achieved:hover, .goal:hover {
       transform: scale(1.02);
     }
     .achieved h2, .goal h2 {
-      border-bottom: 2px solid red;
+      border-bottom: 2px solid #5f00ff;
       padding-bottom: 10px;
       font-size: 1.5em;
       margin-top: 0;
     }
+
     @keyframes fadeUp {
-      0% { opacity: 0; transform: translateY(20px); }
+      0%   { opacity: 0; transform: translateY(20px); }
       100% { opacity: 1; transform: translateY(0); }
     }
 
-    /* --- Прочие секции --- */
-    .platform-info, .special-section {
+    /* Другие секции */
+    .platform-info,
+    .special-section {
       max-width: 600px;
       margin: 20px auto;
       padding: 15px;
       background: rgba(30, 30, 30, 0.9);
       border-radius: 10px;
-      border: 2px solid red;
+      border: 2px solid #5f00ff;
       text-align: left;
       transition: transform 0.3s;
     }
@@ -176,14 +183,14 @@
       transform: scale(1.02);
     }
     .platform-info h2, .special-section h2 {
-      border-bottom: 2px solid red;
+      border-bottom: 2px solid #5f00ff;
       padding-bottom: 10px;
       font-size: 1.5em;
     }
     .special-section {
       text-align: center;
-      border-top: 3px solid red;
-      border-bottom: 3px solid red;
+      border-top: 3px solid #5f00ff;
+      border-bottom: 3px solid #5f00ff;
     }
 
     /* Подвал */
@@ -207,69 +214,109 @@
       transition: color 0.3s;
     }
     .social-icons a:hover {
-      color: red;
+      color: #5f00ff;
     }
 
-    /* ------------------------------------------------------------------ */
-    /* АДАПТИВНЫЙ КОД: медиа-запросы для iPhone 15 Pro Max и меньше       */
-    /* Обычно iPhone 15 Pro Max имеет ~396px в CSS-пикселях по ширине     */
-    /* Но мы ставим чуть выше (например 480 или 600), чтобы охватить и    */
-    /* другие телефоны.                                                   */
-    /* ------------------------------------------------------------------ */
-
+    /* Адаптив на экранах <= 600px */
     @media screen and (max-width: 600px) {
-      /* Уменьшим общий padding body, если хотим более компактно */
-      body {
-        padding: 10px;
+      .header-title {
+        font-size: 2em;
       }
-      .about, .goals-container, .platform-info, .special-section {
-        max-width: 100%;  /* Заполняем всю доступную ширину */
-      }
-
-      /* Чтобы плитки в .goals-container шли друг под другом */
       .goals-container {
-        flex-direction: column; 
-        /* можно уменьшить gap, если нужно */
+        flex-direction: column;
         gap: 10px;
       }
-
-      /* Размер шрифта можно уменьшить, чтобы текст не вылезал */
-      .header-title {
-        font-size: 2em; /* вместо 2.5em */
-      }
-      .about h2, .achieved h2, .goal h2 {
-        font-size: 1.2em; /* заголовки поменьше */
-      }
     }
 
-    /* Еще один пример на совсем узкие экраны (~375px и меньше) */
-    @media screen and (max-width: 400px) {
-      .header-title {
-        font-size: 1.8em;
+    /* --- СНЕЖИНКИ --- */
+    .snowflake {
+      position: fixed;   /* Чтобы они парили поверх всего */
+      top: -10%;         /* Начальная позиция за верхней границей */
+      color: #fff;       /* Белые снежинки */
+      font-size: 14px;   /* Базовый размер (будем варьировать в JS) */
+      pointer-events: none; 
+      z-index: 9999;     /* Поверх всего контента */
+      animation-name: fall;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(0);
+        opacity: 1;
       }
-      /* Можно еще уменьшить отступы или шрифты... */
+      100% {
+        transform: translateY(120vh); /* улетают ниже нижнего края */
+        opacity: 0;
+      }
     }
   </style>
 
-  <!-- Скрипт: ждем, пока всё загрузится, и добавляем "loaded" для плавного появления -->
   <script>
+    // После полной загрузки добавляем класс .loaded (плавное появление)
+    // и запускаем создание снежинок
     window.addEventListener('load', () => {
       document.body.classList.add('loaded');
+      createSnowflakes(30); // Количество снежинок
     });
+
+    // Запрет на контекстное меню (ПКМ)
+    document.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+    });
+
+    // Запрет на нажатие F12 и Ctrl+Shift+I/J/C
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'F12') {
+        e.preventDefault();
+        return false;
+      }
+      if (e.ctrlKey && e.shiftKey &&
+          (e.key === 'I' || e.key === 'J' || e.key === 'C')) {
+        e.preventDefault();
+        return false;
+      }
+    });
+
+    // Функция для создания снежинок
+    function createSnowflakes(numFlakes) {
+      for (let i = 0; i < numFlakes; i++) {
+        const flake = document.createElement('div');
+        flake.classList.add('snowflake');
+        flake.textContent = '❄'; // можно заменить на другой символ
+
+        // Случайная позиция по горизонтали (0% - 100%)
+        flake.style.left = Math.random() * 100 + '%';
+
+        // Случайная длительность анимации (чем больше, тем медленнее)
+        const animDuration = 5 + Math.random() * 5; // 5-10 сек
+        flake.style.animationDuration = animDuration + 's';
+
+        // Случайный размер
+        const size = 10 + Math.random() * 10; // от 10px до 20px
+        flake.style.fontSize = size + 'px';
+
+        document.body.appendChild(flake);
+      }
+    }
   </script>
 </head>
-<body>
 
+<body>
   <header class="header">
     <h1 class="header-title">Игровая Визитка KJK</h1>
   </header>
 
   <nav class="game-nav">
     <ul>
-      <li><a href="https://www.faceit.com/ru/players/_kjk_" target="_blank">CS2 (FaceIT)</a> |</li>
-      <li><a href="https://tracker.gg/valorant/profile/riot/hard%20kjk%230000/overview" target="_blank">Valorant</a> |</li>
-      <li><a href="https://r6.tracker.network/r6siege/profile/ubi/kjk-_-/overview" target="_blank">R6 Siege</a> |</li>
-      <li><a href="https://fortnitetracker.com/profile/all/w.key%20kjk" target="_blank">Fortnite</a></li>
+      <li><a href="https://www.faceit.com/ru/players/_kjk_" target="_blank">CS2 (FaceIT)</a></li>
+      <li><a href="https://tracker.gg/valorant/profile/riot/hard%20kjk%230000/overview" 
+             target="_blank">Valorant</a></li>
+      <li><a href="https://r6.tracker.network/r6siege/profile/ubi/kjk-_-/overview" 
+             target="_blank">R6 Siege</a></li>
+      <li><a href="https://fortnitetracker.com/profile/all/w.key%20kjk" 
+             target="_blank">Fortnite</a></li>
     </ul>
   </nav>
 
@@ -277,12 +324,14 @@
     <!-- ОБО МНЕ -->
     <section class="about">
       <h2>📝 Обо мне</h2>
-      <p>Привет! Я KJK — киберспортсмен, увлекающийся CS2, Valorant и R6 Siege.
-        Моя цель — достичь 10-го уровня на FaceIt и Иммортала в Valorant. Люблю агрессивный стиль игры,
-        стратегическое мышление и высокую динамику матчей!</p>
+      <p>
+        Привет! Я KJK — киберспортсмен, увлекающийся CS2, Valorant и R6 Siege.
+        Моя цель — достичь 10-го уровня на FaceIt и Иммортала в Valorant. 
+        Люблю агрессивный стиль игры, стратегическое мышление и высокую динамику матчей!
+      </p>
     </section>
 
-    <!-- Плитки: Достигнутые цели / Цели на будущее -->
+    <!-- Цели -->
     <div class="goals-container">
       <section class="achieved">
         <h2>🔥 Достигнутые цели</h2>
@@ -296,7 +345,6 @@
       </section>
     </div>
 
-    <!-- Остальные блоки -->
     <section class="platform-info">
       <h2>🛠️ О платформе</h2>
       <p>Этот сайт был создан как визитка для игрового сообщества KJK. Здесь можно следить за прогрессом в играх,
