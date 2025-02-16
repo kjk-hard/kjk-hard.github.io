@@ -1,43 +1,40 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Игровая Визитка KJK</title>
-
-  <!-- Стили -->
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
-    /* 1) Начальное состояние body: невидимое и слегка смещённое */
+    /* Сброс отступов по умолчанию */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* 
+      1) Делаем сайт прокручиваемым мышью (overflow-y: scroll)
+      2) Прячем видимую полосу прокрутки в разных браузерах 
+    */
+    html, body {
+      height: 100%;
+      width: 100%;
+      overflow-y: scroll;       /* Прокрутка колесиком */
+      scrollbar-width: none;    /* Скрыть скроллбар в Firefox */
+    }
+    body::-webkit-scrollbar {
+      width: 0;                /* Скрыть скроллбар в Chrome/Safari/Opera */
+      background: transparent;
+    }
+
     body {
       font-family: 'Press Start 2P', cursive;
       background: #0A0A0A;
       color: white;
       text-align: center;
       padding: 20px;
-
-      /* Прячем скроллбар, как и раньше */
-      overflow-y: scroll;
-      scrollbar-width: none;
-    }
-    body::-webkit-scrollbar {
-      width: 0px;
-    }
-
-    /* --- Анимация появления --- */
-    /* ВАЖНО: при загрузке body будет без класса .loaded,
-       поэтому выставляем начальные стили здесь. */
-    body {
-      opacity: 0;                /* Прозрачность 0 (невидимо) */
-      transform: translateY(20px); /* Чуть смещено вниз */
-      transition: opacity 1s ease, transform 1s ease;
-    }
-
-    /* После загрузки (см. JS ниже), добавим класс .loaded */
-    body.loaded {
-      opacity: 1;                  /* Становится видимым */
-      transform: translateY(0);    /* Возвращается на место */
     }
 
     .header {
@@ -84,7 +81,6 @@
       color: red;
     }
 
-    /* Контейнер для всего контента */
     .container {
       max-width: 100%;
       margin: auto;
@@ -93,7 +89,6 @@
       z-index: 1;
     }
 
-    /* ----- Плитка «Обо мне» ----- */
     .about {
       width: 100%;
       max-width: 800px;
@@ -115,7 +110,6 @@
       margin-top: 0;
     }
 
-    /* ----- Плитки «Достигнутые цели» и «Цели на будущее» ----- */
     .goals-container {
       width: 100%;
       max-width: 800px;
@@ -131,10 +125,9 @@
       border-radius: 10px;
       padding: 15px;
       text-align: left;
-
-      /* Анимация появления самих плиток (при загрузке) */
-      animation: fadeUp 1.2s ease;
       transition: transform 0.3s;
+      
+      animation: fadeUp 1.2s ease; /* Анимация появления */
     }
     .achieved:hover, .goal:hover {
       transform: scale(1.02);
@@ -146,17 +139,10 @@
       margin-top: 0;
     }
     @keyframes fadeUp {
-      0% {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
     }
 
-    /* ----- Прочие блоки ----- */
     .platform-info,
     .special-section {
       max-width: 600px;
@@ -182,7 +168,6 @@
       border-bottom: 3px solid red;
     }
 
-    /* ----- Подвал ----- */
     .footer {
       position: relative;
       z-index: 1;
@@ -205,13 +190,6 @@
       color: red;
     }
   </style>
-
-  <!-- JS: добавим класс .loaded, когда вся страница (включая картинки, и т.д.) загрузилась -->
-  <script>
-    window.addEventListener('load', () => {
-      document.body.classList.add('loaded');
-    });
-  </script>
 </head>
 <body>
   <header class="header">
@@ -220,15 +198,15 @@
 
   <nav class="game-nav">
     <ul>
-      <li><a href="https://www.faceit.com/ru/players/_kjk_" target="_blank">CS2 (FaceIT)</a> |</li>
-      <li><a href="https://tracker.gg/valorant/profile/riot/hard%20kjk%230000/overview" target="_blank">Valorant</a> |</li>
-      <li><a href="https://r6.tracker.network/r6siege/profile/ubi/kjk-_-/overview" target="_blank">R6 Siege</a> |</li>
+      <li><a href="https://www.faceit.com/ru/players/_kjk_" target="_blank">CS2 (FaceIT)</a></li>
+      <li><a href="https://tracker.gg/valorant/profile/riot/hard%20kjk%230000/overview"
+             target="_blank">Valorant</a></li>
+      <li><a href="https://r6.tracker.network/r6siege/profile/ubi/kjk-_-/overview" target="_blank">R6 Siege</a></li>
       <li><a href="https://fortnitetracker.com/profile/all/w.key%20kjk" target="_blank">Fortnite</a></li>
     </ul>
   </nav>
 
   <div class="container">
-    <!-- ОБО МНЕ -->
     <section class="about">
       <h2>📝 Обо мне</h2>
       <p>Привет! Я KJK — киберспортсмен, увлекающийся CS2, Valorant и R6 Siege.
@@ -236,7 +214,6 @@
         стратегическое мышление и высокую динамику матчей!</p>
     </section>
 
-    <!-- Две плитки: «Достигнутые цели» и «Цели на будущее» -->
     <div class="goals-container">
       <section class="achieved">
         <h2>🔥 Достигнутые цели</h2>
@@ -244,14 +221,12 @@
         <p>🔥 Победа в 100 матчах подряд</p>
         <p>⚔ Топ-10 в рейтинге Valorant</p>
       </section>
-
       <section class="goal">
         <h2>🚀 Цели на будущее</h2>
         <p>🎯 FaceIt 10 lvl в 14 лет (сейчас 8 lvl)</p>
       </section>
     </div>
 
-    <!-- Прочие блоки -->
     <section class="platform-info">
       <h2>🛠️ О платформе</h2>
       <p>Этот сайт был создан как визитка для игрового сообщества KJK. Здесь можно следить за прогрессом в играх,
