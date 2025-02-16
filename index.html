@@ -1,193 +1,283 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Игровая Визитка KJK</title>
-    <link rel="stylesheet" href="styles.css">
-    <script defer src="script.js"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-        
-        body {
-            font-family: 'Press Start 2P', cursive;
-            background: #0A0A0A;
-            color: white;
-            text-align: center;
-            padding: 20px;
-            overflow-y: auto;
-            scrollbar-width: none;
-        }
-        body::-webkit-scrollbar {
-            display: none;
-        }
-        .header {
-            background: #0A0A0A;
-            padding: 20px;
-            border-bottom: 3px solid red;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
-        .header-title {
-            font-size: 2.5em;
-            color: white;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            font-weight: 900;
-            transition: color 0.3s, transform 0.3s;
-            animation: glow 2s infinite alternate;
-        }
-        @keyframes glow {
-            0% { text-shadow: 0 0 5px red; }
-            50% { text-shadow: 0 0 15px red; }
-            100% { text-shadow: 0 0 5px red; }
-        }
-        .game-nav ul {
-            list-style: none;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
-        .game-nav li a {
-            text-decoration: none;
-            color: white;
-            transition: color 0.3s;
-        }
-        .game-nav li a:hover {
-            color: red;
-        }
-        .language-selector {
-            position: absolute;
-            right: 20px;
-        }
-        .language-selector select {
-            background: red;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            cursor: pointer;
-            font-weight: bold;
-            border-radius: 5px;
-        }
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            max-width: 100%;
-            margin: auto;
-            padding: 20px;
-            position: relative;
-            z-index: 1;
-        }
-        .achieved, .goal, .about, .platform-info {
-            text-align: left;
-            max-width: 600px;
-            margin: 20px auto;
-            padding: 15px;
-            background: rgba(30, 30, 30, 0.9);
-            border-radius: 10px;
-            border: 2px solid red;
-        }
-        .special-section {
-            text-align: center;
-            width: 100%;
-            padding: 30px;
-            background: rgba(50, 0, 0, 0.8);
-            color: white;
-            border-top: 3px solid red;
-            border-bottom: 3px solid red;
-        }
-        .goal {
-            opacity: 0.7;
-        }
-        .achieved h2, .goal h2, .about h2, .platform-info h2, .special-section h2 {
-            border-bottom: 2px solid red;
-            padding-bottom: 10px;
-            font-size: 1.5em;
-        }
-        .footer {
-            position: relative;
-            z-index: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            padding: 20px;
-        }
-        .social-icons {
-            display: flex;
-            gap: 15px;
-        }
-        .social-icons a {
-            color: white;
-            font-size: 1.5em;
-            transition: color 0.3s;
-        }
-        .social-icons a:hover {
-            color: red;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Игровая Визитка KJK</title>
+
+  <!-- Стили -->
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+    /* 1) Начальное состояние body: невидимое и слегка смещённое */
+    body {
+      font-family: 'Press Start 2P', cursive;
+      background: #0A0A0A;
+      color: white;
+      text-align: center;
+      padding: 20px;
+
+      /* Прячем скроллбар, как и раньше */
+      overflow-y: scroll;
+      scrollbar-width: none;
+    }
+    body::-webkit-scrollbar {
+      width: 0px;
+    }
+
+    /* --- Анимация появления --- */
+    /* ВАЖНО: при загрузке body будет без класса .loaded,
+       поэтому выставляем начальные стили здесь. */
+    body {
+      opacity: 0;                /* Прозрачность 0 (невидимо) */
+      transform: translateY(20px); /* Чуть смещено вниз */
+      transition: opacity 1s ease, transform 1s ease;
+    }
+
+    /* После загрузки (см. JS ниже), добавим класс .loaded */
+    body.loaded {
+      opacity: 1;                  /* Становится видимым */
+      transform: translateY(0);    /* Возвращается на место */
+    }
+
+    .header {
+      background: #0A0A0A;
+      padding: 20px;
+      border-bottom: 3px solid red;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+    .header-title {
+      font-size: 2.5em;
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      font-weight: 900;
+      transition: color 0.3s, transform 0.3s;
+      animation: glow 2s infinite alternate;
+    }
+    @keyframes glow {
+      0%   { text-shadow: 0 0 5px red; }
+      50%  { text-shadow: 0 0 15px red; }
+      100% { text-shadow: 0 0 5px red; }
+    }
+
+    .game-nav {
+      margin-top: 20px;
+    }
+    .game-nav ul {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin: 0;
+    }
+    .game-nav li a {
+      text-decoration: none;
+      color: white;
+      transition: color 0.3s;
+    }
+    .game-nav li a:hover {
+      color: red;
+    }
+
+    /* Контейнер для всего контента */
+    .container {
+      max-width: 100%;
+      margin: auto;
+      padding: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ----- Плитка «Обо мне» ----- */
+    .about {
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto 20px;
+      background: rgba(30, 30, 30, 0.9);
+      border: 2px solid red;
+      border-radius: 10px;
+      padding: 15px;
+      text-align: left;
+      transition: transform 0.3s;
+    }
+    .about:hover {
+      transform: scale(1.02);
+    }
+    .about h2 {
+      border-bottom: 2px solid red;
+      padding-bottom: 10px;
+      font-size: 1.5em;
+      margin-top: 0;
+    }
+
+    /* ----- Плитки «Достигнутые цели» и «Цели на будущее» ----- */
+    .goals-container {
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto 20px;
+      display: flex;
+      gap: 20px;
+      align-items: stretch;
+    }
+    .achieved, .goal {
+      flex: 1;
+      background: rgba(30, 30, 30, 0.9);
+      border: 2px solid red;
+      border-radius: 10px;
+      padding: 15px;
+      text-align: left;
+
+      /* Анимация появления самих плиток (при загрузке) */
+      animation: fadeUp 1.2s ease;
+      transition: transform 0.3s;
+    }
+    .achieved:hover, .goal:hover {
+      transform: scale(1.02);
+    }
+    .achieved h2, .goal h2 {
+      border-bottom: 2px solid red;
+      padding-bottom: 10px;
+      font-size: 1.5em;
+      margin-top: 0;
+    }
+    @keyframes fadeUp {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ----- Прочие блоки ----- */
+    .platform-info,
+    .special-section {
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 15px;
+      background: rgba(30, 30, 30, 0.9);
+      border-radius: 10px;
+      border: 2px solid red;
+      text-align: left;
+      transition: transform 0.3s;
+    }
+    .platform-info:hover, .special-section:hover {
+      transform: scale(1.02);
+    }
+    .platform-info h2, .special-section h2 {
+      border-bottom: 2px solid red;
+      padding-bottom: 10px;
+      font-size: 1.5em;
+    }
+    .special-section {
+      text-align: center;
+      border-top: 3px solid red;
+      border-bottom: 3px solid red;
+    }
+
+    /* ----- Подвал ----- */
+    .footer {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      padding: 20px;
+    }
+    .social-icons {
+      display: flex;
+      gap: 15px;
+    }
+    .social-icons a {
+      color: white;
+      font-size: 1.5em;
+      transition: color 0.3s;
+    }
+    .social-icons a:hover {
+      color: red;
+    }
+  </style>
+
+  <!-- JS: добавим класс .loaded, когда вся страница (включая картинки, и т.д.) загрузилась -->
+  <script>
+    window.addEventListener('load', () => {
+      document.body.classList.add('loaded');
+    });
+  </script>
 </head>
 <body>
-    <header class="header">
-        <h1 class="header-title">Игровая Визитка KJK</h1>
-        <div class="language-selector">
-            <select onchange="changeLanguage(this.value)">
-                <option value="ru">Русский</option>
-                <option value="en">English</option>
-                <option value="de">Deutsch</option>
-            </select>
-        </div>
-    </header>
-    <nav class="game-nav">
-        <ul>
-            <li><a href="https://tracker.gg/cs2" target="_blank">CS2 (FaceIT)</a></li>
-            <li><a href="https://tracker.gg/valorant" target="_blank">Valorant</a></li>
-            <li><a href="https://tracker.gg/r6" target="_blank">R6 Siege</a></li>
-            <li><a href="https://tracker.gg/rust" target="_blank">Rust</a></li>
-        </ul>
-    </nav>
-    
-    <div class="container">
-        <section class="about">
-            <h2>Обо мне</h2>
-            <p>Привет! Я KJK — киберспортсмен, увлекающийся CS2, Valorant и R6 Siege. 
-            Моя цель — достичь 10-го уровня на FaceIt и Иммортала в Valorant. Люблю агрессивный стиль игры, стратегическое мышление и высокую динамику матчей!</p>
-        </section>
-        <section class="achieved">
-            <h2>Достигнутые цели</h2>
-            <p>🏅 Лучший игрок недели в FaceIT</p>
-            <p>🔥 Победа в 100 матчах подряд</p>
-            <p>⚔ Топ-10 в рейтинге Valorant</p>
-        </section>
-        
-        <section class="goal">
-            <h2>Цели на будущее</h2>
-            <p>🎯 FaceIt 10 lvl в 14 лет (сейчас 8 lvl)</p>
-            <p>🏆 Иммортал в Valorant в следующем сезоне</p>
-        </section>
+  <header class="header">
+    <h1 class="header-title">Игровая Визитка KJK</h1>
+  </header>
 
-        <section class="platform-info">
-            <h2>О платформе</h2>
-            <p>Этот сайт был создан как визитка для игрового сообщества KJK. Здесь можно следить за прогрессом в играх, целями и достижениями.</p>
-        </section>
+  <nav class="game-nav">
+    <ul>
+      <li><a href="https://www.faceit.com/ru/players/_kjk_" target="_blank">CS2 (FaceIT)</a> |</li>
+      <li><a href="https://tracker.gg/valorant/profile/riot/hard%20kjk%230000/overview" target="_blank">Valorant</a> |</li>
+      <li><a href="https://r6.tracker.network/r6siege/profile/ubi/kjk-_-/overview" target="_blank">R6 Siege</a> |</li>
+      <li><a href="https://fortnitetracker.com/profile/all/w.key%20kjk" target="_blank">Fortnite</a></li>
+    </ul>
+  </nav>
 
-        <section class="special-section">
-            <h2>Дополнительный раздел</h2>
-            <p>Здесь можно разместить дополнительную информацию, например, о любимых стратегиях, лучших матчах или личных рекордах.</p>
-        </section>
+  <div class="container">
+    <!-- ОБО МНЕ -->
+    <section class="about">
+      <h2>📝 Обо мне</h2>
+      <p>Привет! Я KJK — киберспортсмен, увлекающийся CS2, Valorant и R6 Siege.
+        Моя цель — достичь 10-го уровня на FaceIt и Иммортала в Valorant. Люблю агрессивный стиль игры,
+        стратегическое мышление и высокую динамику матчей!</p>
+    </section>
+
+    <!-- Две плитки: «Достигнутые цели» и «Цели на будущее» -->
+    <div class="goals-container">
+      <section class="achieved">
+        <h2>🔥 Достигнутые цели</h2>
+        <p>🏅 Лучший игрок недели в FaceIT</p>
+        <p>🔥 Победа в 100 матчах подряд</p>
+        <p>⚔ Топ-10 в рейтинге Valorant</p>
+      </section>
+
+      <section class="goal">
+        <h2>🚀 Цели на будущее</h2>
+        <p>🎯 FaceIt 10 lvl в 14 лет (сейчас 8 lvl)</p>
+      </section>
     </div>
-    <footer class="footer">
-        <div class="social-icons">
-            <a href="https://discord.com" target="_blank">🔗 Discord</a>
-            <a href="https://steamcommunity.com" target="_blank">🎮 Steam</a>
-        </div>
-        <p class="footer-text">© 2025 KJK | Все права защищены</p>
-        <p>Разработчик сайта: KJK Dev</p>
-    </footer>
+
+    <!-- Прочие блоки -->
+    <section class="platform-info">
+      <h2>🛠️ О платформе</h2>
+      <p>Этот сайт был создан как визитка для игрового сообщества KJK. Здесь можно следить за прогрессом в играх,
+        целями и достижениями.</p>
+    </section>
+
+    <section class="special-section">
+      <h2>Дополнительный раздел</h2>
+      <p>Игры – это не просто развлечение, это искусство, требующее стратегии, реакции и хладнокровия. Здесь, на
+        этом сайте, собраны мои достижения, цели и путь к совершенству в киберспорте. Я не просто играю – я
+        анализирую, учусь и адаптируюсь к любым вызовам.</p>
+      <p>_"Ты еда или хищник? В этом мире сильные пожирают слабых." – Шу Цукияма (Гурман, Токийский гуль)_</p>
+      <p>Я выбираю быть хищником. Каждый матч – это битва за превосходство, каждое поражение – это урок, а каждое
+        достижение – новый уровень мастерства. В мире гейминга нет предела совершенству, и я намерен доказать
+        это.</p>
+      <p>💥 <strong>Топ-1 или ничего. GGWP. 💀</strong></p>
+    </section>
+  </div>
+
+  <footer class="footer">
+    <div class="social-icons">
+      <a href="http://discordapp.com/users/705782874984546314" target="_blank">🔗 Discord</a>
+      <a href="https://steamcommunity.com/id/RRH-Player" target="_blank">🎮 Steam</a>
+    </div>
+    <p class="footer-text">© 2025 KJK | Все права защищены</p>
+    <p>Разработчик сайта: <a href="https://eric-lebedenko.github.io/" target="_blank">Eric Lebedenko</a></p>
+  </footer>
 </body>
 </html>
